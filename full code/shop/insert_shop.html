@@ -1,0 +1,127 @@
+<html>
+<head>
+  <title>Shop Insert</title>
+  <script src="insert_shop.js"></script>
+  <link rel="stylesheet" href="button.css">
+
+  <style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  </style>
+  </head>
+  <body onload="fetch_hours();load_shops();">
+    <div class="topnav">
+      <a  href="http://localhost/dashboard.html" >Dashboard</a>
+      <a  href="http://localhost/customer/customer_page.html" >Edit Customer</a>
+    <a href="http://localhost/product/insert_product.html" >Edit Product</a>
+    <a href="http://localhost/shop/insert_shop.html" >Edit Store</a>
+    <a href="http://localhost/transaction/cust.html" >Edit  Transaction</a>
+    </div>
+    <div id="error_window" style="position:fixed;top:0%;right:0%"></div>
+    <h1>Shopcraft</h1>
+    <button onclick="doo();">Add new shop!</button>
+    <button onclick="redoo();">Edit/Delete existing shop!</button>
+    <div id = "the_bar" style="visibility:hidden">
+      <select id="shop_list"></select>
+      <button onclick="load_elems();">go!</button>
+      </div>
+      <div id="workspace" style="visibility:hidden">
+
+
+
+    <label>city:</label>
+    <select id="city"><option value="None">None</option><option value="Athens">Athens</option><option value="Thessaloniki">Thessaloniki</option><option value="Patras">Patras</option></select>
+    <div id="city_error"></div>
+
+    <br />
+    <br />
+
+    <label>street:</label>
+    <input type="text" id="street">
+    <div id="street_error"></div>
+
+    <br />
+    <br />
+
+
+    <label>number:</label>
+    <input type="text" id="number">
+    <div id="number_error"></div>
+
+    <br />
+    <br />
+
+    <label>postal_code:</label>
+    <input type="text" id="postal_code">
+    <div id="postal_code_error"></div>
+
+    <br />
+    <br />
+
+
+    <label>opening hours:</label>
+
+    hh:<select id="hour_choose_first"></select>
+    mm:<select id="minute_choose_first"></select>
+    --hh:<select id="hour_choose_second"></select>
+    mm:<select id="minute_choose_second"></select>
+
+    <div id="opening_hours_error"></div>
+
+    <br />
+    <br />
+
+    <label>size:</label>
+    <input type="text" id="size">
+    <div id="size_error"></div>
+
+    <label>Telephone</label>
+    <input type="text" id="telephone-input0">
+    <button  onclick="add_tel('')">Add more telephones</button>
+    <div id="menu"></div>
+
+    <br />
+    <br />
+
+    <label>Selects products of type:</label>
+
+    <input type="checkbox" value="Toiletries" id=4> Toiletries
+    <input type="checkbox"   value="Frozen foods" id=1 > Frozen foods
+    <input type="checkbox" value="Wine goods" id=3> Wine goods
+    <input type="checkbox"  value="Pet foods and products" id=5 > Pet foods and products
+    <input type="checkbox"  value="Household goods" id=2> Household goods
+    <input type="checkbox"  value="Fresh Products" id=6> Fresh Products
+
+    <br>
+
+
+    <button id="insert_button"onclick="upload()">insert</button>
+    </div>
+    </body>
+</html>

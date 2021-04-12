@@ -1,0 +1,276 @@
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+
+  <style type="text/css">
+    #map { height: 180px; width:300px; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    body{
+      background: #fff;
+    }
+    .box {
+      transition: box-shadow .3s;
+      width: 380;
+      height: 255px;
+      margin: 50px;
+      border-radius:10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      float: left;
+      text-align:center;
+
+    }
+    .box:hover {
+      box-shadow: 0 0 11px rgba(33,33,33,.2);
+    }
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .topnav a.active {
+      background-color: #4CAF50;
+      color: white;
+}
+      .btn {
+        position: relative;
+
+        display: block;
+        margin: 30px auto;
+        padding: 0;
+
+        overflow: hidden;
+
+        border-width: 0;
+        outline: none;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+        background-color: #2ecc71;
+        color: #ecf0f1;
+
+        transition: background-color .3s;
+      }
+
+      .btn:hover, .btn:focus {
+        background-color: #27ae60;
+      }
+
+      .btn > * {
+        position: relative;
+      }
+
+      .btn span {
+        display: block;
+        padding: 12px 24px;
+      }
+
+      .btn:before {
+        content: "";
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        display: block;
+        width: 0;
+        padding-top: 0;
+
+        border-radius: 100%;
+
+        background-color: rgba(236, 240, 241, .3);
+
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+
+      .btn:active:before {
+        width: 120%;
+        padding-top: 120%;
+
+        transition: width .2s ease-out, padding-top .2s ease-out;
+      }
+
+      /* Styles, not important */
+      *, *:before, *:after {
+        box-sizing: border-box;
+      }
+
+      .btn.orange {
+        background-color: #e67e22;
+      }
+
+      .btn.orange:hover, .btn.orange:focus {
+        background-color: #d35400;
+      }
+    </style>
+    <script type="text/javascript">
+
+      function moveto(dir){
+        window.location = dir;
+
+      }
+    function redirect(page)
+    {
+      if (page == 'Date')
+      {
+          window.location = 'ask_a/date.php';
+      }
+      else if (page == 'Points')
+      {
+          window.location = 'ask_a/points.php';
+      }
+      else if (page == 'Cost')
+      {
+          window.location = 'ask_a/Cost.php';
+      }
+      else if (page == 'Payment')
+      {
+          window.location = 'ask_a/Way_of_method.php';
+      }
+      else if (page == 'Category')
+      {
+          window.location = 'ask_a/Category.php';
+      }
+    }
+
+      </script>
+  </head>
+  <body>
+    <div class="topnav" >
+      <a  href="http://localhost/dashboard.html" >Dashboard</a>
+      <a  href="http://localhost/customer/customer_page.html" >Edit Customer</a>
+    <a href="http://localhost/product/insert_product.html" >Edit Product</a>
+    <a href="http://localhost/shop/insert_shop.html" >Edit Store</a>
+    <a href="http://localhost/transaction/cust.html" >Edit  Transaction</a>
+    </div>
+    <h1><i>Rise and shine shops</i> </h1><br/>
+    <h2>Shop Map</h2>
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+<script>
+  var theUrl = "http://localhost/fetch_add.php";
+  var xmlHttp = new XMLHttpRequest();
+  var places =[];
+  mapboxgl.accessToken = 'pk.eyJ1Ijoibmlrb3NnaW8iLCJhIjoiY2tiazM4aG9xMDI1ZzJxbXM4OGh6cjJ6dCJ9.bxYErVfZBQjv2eQcT8p2xg';
+
+  var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+  var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [23.727539,37.983810],
+  zoom: 3
+  });
+  map.addControl(new mapboxgl.NavigationControl());
+
+  xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+          console.log(JSON.parse(xmlHttp.responseText));
+          places = JSON.parse(xmlHttp.responseText);
+          var lats =[];
+          console.log(places);
+          for(var i=0; i<places.length;i++){
+            var cur =i;
+            console.log(places[i]);
+            mapboxClient.geocoding
+            .forwardGeocode({
+            query: places[i],
+            autocomplete: false,
+            limit: 1
+            })
+            .send()
+            .then(function(response) {
+            if (
+            response &&
+            response.body &&
+            response.body.features &&
+            response.body.features.length
+            ) {
+
+
+
+            lats.push(response.body.features[0].center);
+            new mapboxgl.Marker().setLngLat(response.body.features[0].center).addTo(map);
+
+          }else{
+            console.log("problem");
+          }
+            });
+          }
+          console.log(lats);
+
+
+      }
+  }
+
+  xmlHttp.open("POST", theUrl, true); // true for asynchronous
+  xmlHttp.setRequestHeader("Content-type", "application/json");
+  xmlHttp.send();
+
+
+</script>
+
+    <div id="menu_id" class="box">
+      <h2>Transaction log </h2>
+      <button class="btn orange" type="button"onclick="moveto('http://localhost/ask_a/trans_det.html')"><span><b>Show Transaction log</b></span></button>
+
+
+    </div>
+    <div class="box" id="menu_id1">
+      <h2>Customers' profile</h2>
+      <button class="btn orange" type="button"onclick="moveto('http://localhost/ask_b/run.html')"><span><b>See customers' profile</b></span></button>
+      </div>
+
+
+
+        <div class="box" id="menu_id3">
+          <h2>Results</h2>
+          <button class="btn orange" type="button"onclick="moveto('http://localhost/ask_c/Erotima_6c.html')"><span><b>See task c</b></span></button>
+          <i>Most popular product pairs,most popular positions of each product in each store,precentage of trust in rise and shine brand per product category,hours that customers spend more money,precentage of customers' age groups</i>
+
+          </div>
+          <div id="menu_id4" class="box">
+            <h2>Views</h2>
+            <button class="btn orange" type="button" onclick="moveto('http://localhost/views/views.html')"><span><b>See views</b></span></button>
+
+            </div>
+
+            <div id="menu_id6" class="box">
+              <h2>Extra information</h2>
+              <button class="btn orange" type="button"onclick="moveto('http://localhost/ask_g/Erotima_6g.html')"><span><b>See extra info</b></span></button>
+
+              </div>
+
+    </body>
+</html>

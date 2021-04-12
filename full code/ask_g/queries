@@ -1,0 +1,52 @@
+#Βρίσκει πόσες φορές αγοράστηκε το προιον κάθε μήνα
+select  EXTRACT(MONTH FROM T.date_time)as MONTH,P.barcode, sum(a.quantity),P.category_id
+  from includes as a,Transaction as T,Product as P
+  where a.transcaction_id=T.transcaction_id and a.barcode=P.barcode
+group by MONTH,P.barcode
+
+#ΕΜΦΑΝΙΖΕΙ ΑΝΑ ΚΑΤΗΓΟΡΙΑ ΠΟΣΑ ΠΡΟΙΟΝΤΑ ΠΩΛΟΥΝΤΑΙ ΚΑΘΕ ΠΕΡΙΟΔΟ
+SELECT table1.Category as Category,
+                SUM(CASE WHEN table1.MONTH BETWEEN 3 AND 5 THEN table1.quantity ELSE 0 END) AS SPRING,
+                SUM(CASE WHEN table1.MONTH BETWEEN 6 AND 8 THEN table1.quantity ELSE 0 END) AS SUMMER,
+                SUM(CASE WHEN table1.MONTH BETWEEN 9 AND 11 THEN table1.quantity ELSE 0 END) AS AUTUMN,
+                SUM(CASE WHEN table1.MONTH BETWEEN 1 AND 2  OR table1.MONTH=12 THEN table1.quantity ELSE 0 END) AS WINTER
+FROM (select  EXTRACT(MONTH FROM T.date_time)as MONTH,P.barcode, sum(a.quantity) as quantity,P.category_id as Category
+  from includes as a,Transaction as T,Product as P
+  where a.transcaction_id=T.transcaction_id and a.barcode=P.barcode
+group by MONTH,P.barcode
+) table1
+GROUP BY table1.Category
+
+
+######################################################################
+
+##Σύνολο υγιεινών προιόντων ανα αριθμό παιδιών
+SELECT COUNT(P.category_id) AS OCCURANCIES,C.number_of_children
+FROM Transaction as T,includes as i,Customer as C,Product as P
+WHERE i.transcaction_id=T.transcaction_id and C.card_id=T.card_id and P.barcode=i.barcode and P.category_id=(Select category_id from Category where name="Fresh products")
+group by C.number_of_children
+
+
+
+
+
+#Σύνολο προιόντων που έχουν αυτοί που έχουν ο μηδέν παιδία vs περισσότερα #από ένα
+SELECT SUM(CASE WHEN C.number_of_children=0 then 1 else 0 END) AS NO_CHILDREN,
+SUM(CASE WHEN C.number_of_children>0 then 1 else 0 END) AS MORE_THAN_ONE
+FROM Transaction as T,includes as i,Customer as C
+WHERE i.transcaction_id=T.transcaction_id and C.card_id=T.card_id
+
+
+
+
+#Σύνολο υγιεινών προιόντων που έχουν αυτοί που έχουν ο μηδέν παιδία vs περισσότερα από ένα
+SELECT
+SUM(CASE WHEN table1.number_of_children=0 then table1.OCCURANCIES else 0 END) AS NO_CHILDREN_HEALTHY,
+SUM(CASE WHEN table1.number_of_children>0 then table1.OCCURANCIES else 0 END) AS MORE_THAN_ONE_CHILDREN_HEALTHY
+FROM (SELECT COUNT(P.category_id) AS OCCURANCIES,C.number_of_children
+FROM Transaction as T,includes as i,Customer as C,Product as P
+WHERE i.transcaction_id=T.transcaction_id and C.card_id=T.card_id and P.barcode=i.barcode and P.category_id=(Select category_id from Category where name="Fresh products")
+group by C.number_of_children
+)table1
+
+

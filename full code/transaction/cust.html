@@ -1,0 +1,168 @@
+<html>
+    <head>
+
+        <script type ="text/javascript" src="cust.js"></script>
+        <link rel="stylesheet" href="cust.css">
+        <title>Order page</title>
+        <style>
+        table, th, td {
+        border: 1px solid black;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      table {
+        border: 1px solid black;
+      }
+      table {
+        width: 100%;
+      }
+
+      th {
+        height: 50px;
+      }
+      th {
+        text-align: left;
+      }
+      td {
+        height: 50px;
+        vertical-align: bottom;
+      }
+      th, td {
+        padding: 15px;
+        text-align: left;
+      }
+
+      th, td {
+        border-bottom: 1px solid #ddd;
+      }
+      tr:hover {background-color: #f5f5f5;}
+      tr:nth-child(even) {background-color: #f2f2f2;}
+        body {
+          margin: 0;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .topnav {
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        .topnav a {
+          float: left;
+          color: #f2f2f2;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-size: 17px;
+        }
+
+        .topnav a:hover {
+          background-color: #ddd;
+          color: black;
+        }
+
+        .topnav a.active {
+          background-color: #4CAF50;
+          color: white;
+        }
+
+        </style>
+    </head>
+    <Page>
+        <body onload="getStart();">
+          <div class="topnav">
+            <a  href="http://localhost/dashboard.html" >Dashboard</a>
+            <a  href="http://localhost/customer/customer_page.html" >Edit Customer</a>
+          <a href="http://localhost/product/insert_product.html" >Edit Product</a>
+          <a href="http://localhost/shop/insert_shop.html" >Edit Store</a>
+          <a href="http://localhost/transaction/cust.html" >Edit  Transaction</a>
+          </div>
+            <h1>Order Page</h1>
+            <div id="error_area" style="position:fixed;top:0%;right:0%"></div>
+            <table id="datat">
+                <div id="input">
+                <h4>Enter customer's id</h4>
+                <input type="text" id="cust_name">
+              <div id="cid"></div>
+                <br />
+                <div id= "sshop">
+                <h4>Select Shop</h4>
+                <select id="selectPlace"></select>
+              </div>
+                <br />
+                <h4>Enter a date, for timetravel purposes!</h4>
+                <label > year: </label>
+                <select id="year"><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option></select>
+                <label > month</label>
+                <select id="month"><option value="01">January</option><option value="02">February</option><option value="03">March</option><option value="04">April</option><option value="05">May</option><option value="06">June</option><option value="07">July</option>
+                  <option value="08">August</option><option value="09">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                </select>
+                <label > day </label>
+                <select id="day"><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+                <option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+                  <option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+                <label>  hour </label>
+                <select id="hour"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+                <option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+                </select>
+                <label>  minute </label>
+                <select id="minute"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+                <option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+                <option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                <option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option>
+                <option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option>
+                <option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option>
+                <option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option>
+                <option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+              </select>
+
+
+                <label>  second </label>
+                <select id="second"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+                <option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+                <option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                <option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option>
+                <option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option>
+                <option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option>
+                <option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option>
+                <option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>
+              </select>
+              <div id="sdate" style="color:red; visibility:hidden;">not valid date!</div>
+              <div id="shour" style="color:red; visibility:hidden;">shop not open at this time!</div>
+              <div id="sstamp" style="color:red; visibility:hidden;">same customer cant have more than 1 trans in same timestamp!</div>
+
+
+                <br /><br />
+                <div id="spay">
+                <h4>Select payment method:</h4>
+                <select id="payment">
+                  <option value="Card">Card</option>
+                  <option value="Cash">Cash</option>
+
+                </select>
+
+              </div>
+                <br /><br />
+              </div>
+                <button onclick="httpGetAsync();" class="btn orange" type="button"><span><b>Fetch products</b></span></button>
+                <button onclick="cancelInput();" class="btn orange" type="button"><span><b>Cancel</b></span></button>
+
+                <br/><br/>
+                <div id="product_store"></div>
+            </table>
+            <div id="pay" style="position:fixed;top: 0px;right: 0px;background-color:#f0f5f5">
+            </div>
+        </body>
+    </Page>
+</html>

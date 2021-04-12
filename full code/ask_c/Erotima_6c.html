@@ -1,0 +1,444 @@
+<html>
+<head>
+<style>
+table, th, td {
+border: 1px solid black;
+}
+table {
+border-collapse: collapse;
+}
+table {
+border: 1px solid black;
+}
+table {
+width: 100%;
+}
+
+th {
+height: 50px;
+}
+th {
+text-align: left;
+}
+td {
+height: 50px;
+vertical-align: bottom;
+}
+th, td {
+padding: 15px;
+text-align: left;
+}
+
+th, td {
+border-bottom: 1px solid #ddd;
+}
+tr:hover {background-color: #f5f5f5;}
+tr:nth-child(even) {background-color: #f2f2f2;}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<script>
+
+var cur =[];
+var store_dets =[];
+var mid;
+function get_popular_products(){
+  var file_for_getting_popular_products="http://localhost/ask_c/get_popular_products.php";
+  var xmlrequest=new XMLHttpRequest();
+  xmlrequest.onreadystatechange=function(){
+      if (xmlrequest.readyState==4 && xmlrequest.status==200){
+          console.log(JSON.parse(xmlrequest.responseText));
+          var criteria=document.getElementById("print");
+          var criteria2=document.getElementById("chartContainer");
+          var criteria3=document.getElementById("buttonsContainer");
+          if(criteria.hasChildNodes()||criteria2.hasChildNodes()||criteria3.hasChildNodes()){
+                                criteria.innerHTML ='';
+                                criteria2.innerHTML='';
+                                criteria3.innerHTML='';
+                                console.clear();
+                              }
+          var elem=document.createElement("text");
+          criteria.appendChild(elem);
+          var my_html = "<br><br><table>";
+          my_html += "<tr><td>product1 </td><td> product1 name </td><td> product1_brand </td><td>product2 <td> product2_name </td><td> product2_brand </td><td> occurance </td></tr>";
+          var my_result = JSON.parse(xmlrequest.responseText);
+          for (var i=0; i<my_result[0].length; i++){
+              var product1=my_result[0][i];
+              var product1_name=my_result[1][i];
+              var product1_brand=my_result[2][i];
+              var product2=my_result[3][i];
+              var product2_name=my_result[4][i];
+              var product2_brand=my_result[5][i];
+              var occurance=my_result[6][i];
+              my_html += "<tr><td>"+product1+"</td><td>"+product1_name+"</td><td>"+product1_brand+"</td><td>"+product2+"<td>"+product2_name+"</td><td>"+product2_brand+"</td><td>"+occurance+"</td></tr>";
+              //var result=product1+"-"+ product1_name+"-"+product1_brand+"  -  "+product2+"-"+product2_name+"-"+product2_brand +"-"+occurance;
+              //console.log(result);
+              //var elem1=document.createElement("text");
+              //elem1.innerHTML=result+"<br>";
+
+          }
+          my_html += "</table>";
+          criteria.innerHTML += my_html;
+      }
+  }
+  xmlrequest.open("GET",file_for_getting_popular_products,true);
+  xmlrequest.send(null);
+}
+
+function get_popular_positions(){
+  var file_for_getting_popular_positions="http://localhost/ask_c/get_popular_positions.php";
+  var xmlrequest=new XMLHttpRequest();
+  xmlrequest.onreadystatechange=function(){
+      if (xmlrequest.readyState==4 && xmlrequest.status==200){
+          console.log(JSON.parse(xmlrequest.responseText)[0].length);
+          var criteria=document.getElementById("print");
+          var criteria2=document.getElementById("chartContainer");
+          var criteria3=document.getElementById("buttonsContainer");
+          if(criteria.hasChildNodes()||criteria2.hasChildNodes()||criteria3.hasChildNodes()){
+                                criteria.innerHTML ='';
+                                criteria2.innerHTML='';
+                                criteria3.innerHTML='';
+                                console.clear();
+                              }
+          var mydata ="<table>";
+          mydata +="<tr><td>Store</td><td>Position</td><td>Product Barcode</td><td>Product Name</td><td>Product Brand</td></tr>";
+          for (var i=0; i<JSON.parse(xmlrequest.responseText)[0].length; i++){
+              var store=JSON.parse(xmlrequest.responseText)[0][i];
+              var corridor=JSON.parse(xmlrequest.responseText)[1][i];
+              var self=JSON.parse(xmlrequest.responseText)[2][i];
+              var product1=JSON.parse(xmlrequest.responseText)[3][i];
+              var product1_name=JSON.parse(xmlrequest.responseText)[4][i];
+              var product1_brand=JSON.parse(xmlrequest.responseText)[5][i];
+              var result="In store "+ store + " the best position is in corridor "+corridor +" at self "+self+". This belonds to Product: "+product1+"-"+ product1_name+"-"+product1_brand;
+              mydata +="<tr><td>"+store+"</td><td> corridor: "+corridor+" self: "+self+"</td><td>"+product1+"</td><td>"+product1_name+"</td><td>"+product1_brand+"</td></tr>";
+              //console.log(result);
+              //var elem1=document.createElement("text");
+              //elem1.innerHTML=result+"<br>";
+              //criteria.appendChild(elem1);
+          }
+          mydata +="</table>";
+          criteria.innerHTML += mydata;
+      }
+  }
+  xmlrequest.open("GET",file_for_getting_popular_positions,true);
+  xmlrequest.send(null);
+}
+
+
+
+function get_percentage(){
+  var file_for_getting_percentage="http://localhost/ask_c/get_percentage.php";
+  var xmlrequest=new XMLHttpRequest();
+  xmlrequest.onreadystatechange=function(){
+      if (xmlrequest.readyState==4 && xmlrequest.status==200){
+          console.log(JSON.parse(xmlrequest.responseText));
+          console.log(JSON.parse(xmlrequest.responseText)[0].length);
+          var criteria=document.getElementById("print");
+          var criteria2=document.getElementById("chartContainer");
+          var criteria3=document.getElementById("buttonsContainer");
+          if(criteria.hasChildNodes()||criteria2.hasChildNodes()||criteria3.hasChildNodes()){
+                                criteria.innerHTML ='';
+                                criteria2.innerHTML='';
+                                criteria3.innerHTML='';
+                                console.clear();
+                              }
+          l1=[];
+          for (var i=0; i<JSON.parse(xmlrequest.responseText)[0].length; i++){
+              var category=JSON.parse(xmlrequest.responseText)[0][i];
+              var riseandshine=JSON.parse(xmlrequest.responseText)[1][i];
+              var total=JSON.parse(xmlrequest.responseText)[2][i];
+              element=riseandshine/total*100;
+              //ΕΊΝΑΙ ΛΟΓΙΚΟ ΝΑ ΜΗ ΒΓΑΙΝΕΙ 100 ΣΥΝΟΛΟ ΓΤ ΑΝΑΦΕΡΟΜΑΣΤΕ ΣΕ ΠΟΣΟΣΤΟ ΚΑΘΕ ΚΑΤΗΓΟΡΙΑΣ ΠΟΥ ΤΟ ΣΥΝΟΛΟ ΜΕΤΑΒΒΑΛΕΤΑΙ
+              l1.push(element);
+          }
+          pie(l1);
+      }
+  }
+  xmlrequest.open("GET",file_for_getting_percentage,true);
+  xmlrequest.send(null);
+}
+
+
+function get_hours(){
+  var file_for_get_hours="http://localhost/ask_c/get_hours.php";
+  var xmlrequest=new XMLHttpRequest();
+  xmlrequest.onreadystatechange=function(){
+      if (xmlrequest.readyState==4 && xmlrequest.status==200){
+          console.log(JSON.parse(xmlrequest.responseText)[0].length);
+          var criteria=document.getElementById("print");
+          var criteria2=document.getElementById("chartContainer");
+          var criteria3=document.getElementById("buttonsContainer");
+          if(criteria.hasChildNodes()||criteria2.hasChildNodes()||criteria3.hasChildNodes()){
+                                criteria.innerHTML ='';
+                                criteria2.innerHTML='';
+                                criteria3.innerHTML='';
+                                console.clear();
+                              }
+          var elem=document.createElement("text");
+          elem.innerHTML="<strong><br>When customers spend more money ? </strong><br>";
+          criteria.appendChild(elem);
+          for (var i=0; i<JSON.parse(xmlrequest.responseText)[0].length; i++){
+              var store=JSON.parse(xmlrequest.responseText)[0][i];
+              var total_cost=JSON.parse(xmlrequest.responseText)[1][i];
+              var hour=JSON.parse(xmlrequest.responseText)[2][i];
+              var result="<strong>Store "+store+"</strong><br> Max cost: "+total_cost +" at "+hour;
+              console.log(result);
+              var elem1=document.createElement("text");
+              elem1.innerHTML=result+"<br>";
+              criteria.appendChild(elem1);
+          }
+          if(((xmlrequest.responseText)[0].length)!=10){
+          var elem=document.createElement("text");
+          elem.innerHTML="<br><strong>In the other stores there are no transactions </strong><br><br>";
+          criteria.appendChild(elem);
+        }
+      }
+  }
+  xmlrequest.open("GET",file_for_get_hours,true);
+  xmlrequest.send(null);
+}
+
+
+function get_age(){
+  var file_for_getting_percentage="http://localhost/ask_c/get_age_groups.php";
+  var xmlrequest=new XMLHttpRequest();
+  xmlrequest.onreadystatechange=function(){
+      if (xmlrequest.readyState==4 && xmlrequest.status==200){
+          var criteria=document.getElementById("print");
+          var criteria2=document.getElementById("chartContainer");
+          var criteria3=document.getElementById("buttonsContainer");
+          if(criteria.hasChildNodes()||criteria2.hasChildNodes()||criteria3.hasChildNodes()){
+                                criteria.innerHTML ='';
+                                criteria2.innerHTML='';
+                                criteria3.innerHTML='';
+                                console.clear();
+                              }
+
+          var elem=document.createElement("text");
+          elem.innerHTML="<br><strong>Press the button for the Store of your choise</strong><br>";
+          criteria.appendChild(elem);
+          var resu = JSON.parse(xmlrequest.responseText);
+          const buttonsContainer = document.getElementById("buttonsContainer");
+          var old_store ="";
+          for (var i=0; i<resu[0].length; i++){
+              l1=[];
+              var store=resu[0][i];
+              var hour=resu[1][i];
+              var Age_Under_18=resu[2][i];
+              var Age_18_24=resu[3][i];
+              var Age_25_34=resu[4][i];
+              var Age_35_42=resu[5][i];
+              var Age_43_50=resu[6][i];
+              var Age_51_64=resu[7][i];
+              var Age_Over_65=resu[8][i];
+              var sum=resu[11][i];
+              under_age=Age_Under_18/sum*100;
+              age1=Age_18_24/sum*100;
+              age2=Age_25_34/sum*100;
+              age3=Age_35_42/sum*100;
+              age4=Age_43_50/sum*100;
+              age5=Age_51_64/sum*100;
+              over_age=Age_Over_65/sum*100;
+              l1.push(under_age);
+              l1.push(age1);
+              l1.push(age2);
+              l1.push(age3);
+              l1.push(age4);
+              l1.push(age5);
+              l1.push(over_age);
+              l1.push(store);
+              l1.push(hour);
+              //Δεν το εκτυπωνει πολλες φορες.
+              if(store != old_store){
+              old_store =store;
+              store_dets[store] =[];
+              store_dets[store].push(l1);
+              var btn = document.createElement("button");
+              btn.innerText = "Store "+store;
+              btn.id =store;
+              btn.onclick = function(){
+                document.getElementById("chartContainer").innerHTML ="";
+                mid = this.id;
+                var inhtml  = "<br>Choose hour:<br><select id='select"+this.id+"'>";
+
+                console.log("this"+store_dets);
+                for (var j=0; j<store_dets[this.id].length;j++){
+                  var choosen = store_dets[this.id][j][8];
+                  inhtml += "<option value="+j+">"+choosen+":00</option>";
+
+                }
+
+                inhtml +="</select><button onclick='myfun()'>go</button>";
+
+                document.getElementById("chartContainer").innerHTML =inhtml;
+              }
+             buttonsContainer.appendChild(btn);
+           }else{
+             store_dets[store].push(l1);
+
+           }
+          }
+
+
+      }
+  }
+
+  xmlrequest.open("GET",file_for_getting_percentage,true);
+  xmlrequest.send(null);
+}
+function myfun(){
+
+  var to_search ="select"+mid;
+  var found = document.getElementById(to_search).value;
+  console.log(store_dets[mid][found]);
+  bar(store_dets[mid][found],chartCont);
+}
+function myFunction(){
+  alert();
+}
+
+function redirect(page)
+{
+  if (page == 'Popular_Product_Pairs')
+  {
+      get_popular_products();
+  }
+  else if (page == 'Popular_Positions')
+  {
+      get_popular_positions();
+  }
+
+  else if (page == 'Product_Percentage')
+  {
+      get_percentage();
+  }
+  else if (page == 'Hours')
+  {
+      get_hours();
+  }
+  else if (page == 'Age_Percentage')
+  {
+    get_age();
+  }
+}
+
+function pie(array) {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+		text: "Rise & Shine's Products that users trust"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 240,
+		yValueFormatString: "##0.00\"%\"",
+		indexLabel: "{label} {y}",
+		dataPoints: [
+			{y: array[0], label: "Fresh products"},
+			{y: array[1], label: "Frozen foods"},
+			{y: array[2], label: "Household goods"},
+			{y: array[3], label: "Pet foodsand products"},
+			{y: array[4], label: "Toiletries"},
+      {y: array[5], label: "Wine goods"}
+		]
+	}]
+});
+chart.render();
+}
+
+
+
+function bar(l,tid) {
+
+
+
+  console.log(l);
+  console.log(tid);
+var chart = new CanvasJS.Chart(tid, {
+	animationEnabled: true,
+	theme: "light1", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Age Groups in Store "+l[7]+ " at "+l[8]+".00"
+	},
+	axisY: {
+		title: "Percentage"
+	},
+	data: [{
+		type: "column",
+		showInLegend: true,
+		legendMarkerColor: "grey",
+		legendText: "Age Groups",
+		dataPoints: [
+			{ y: l[0], label: "Under 18" },
+			{ y: l[1],  label: "18-24" },
+			{ y: l[2],  label: "25-34" },
+			{ y: l[3],  label: "35-42" },
+			{ y: l[4],  label: "43-50" },
+			{ y: l[5], label: "51-64" },
+      { y: l[6], label: "Over_65" },
+		]
+	}]
+});
+chart.render();
+
+}
+
+
+</script>
+
+<body>
+  <div class="topnav">
+    <a  href="http://localhost/dashboard.html" >Dashboard</a>
+    <a  href="http://localhost/customer/customer_page.html" >Edit Customer</a>
+  <a href="http://localhost/product/insert_product.html" >Edit Product</a>
+  <a href="http://localhost/shop/insert_shop.html" >Edit Store</a>
+  <a href="http://localhost/transaction/cust.html" >Edit  Transaction</a>
+  </div>
+  <h1>Results</h1>
+
+    <text>Choose the result you want </text>
+    <select  id="Criterion" onchange="redirect(this.value)">
+    <option >-Press here-</option>
+    <option value='Popular_Product_Pairs'> Popular Product Pairs</option>
+    <option value='Popular_Positions'> Popular Positions of Products </option>
+    <option value='Product_Percentage'> Products that users trust </option>
+    <option value='Hours'>  Hours that users spend more money </option>
+    <option value='Age_Percentage'> Age Groups per Hour </option>
+  </select>
+  <div id="print">
+</div>
+<div id="buttonsContainer" ></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer" ></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartCont" style="width: 45%; height: 300px;display: inline-block;"></div>
+</body>
+</html>

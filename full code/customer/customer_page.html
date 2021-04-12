@@ -1,0 +1,173 @@
+<html>
+<head>
+  <link rel="stylesheet" href="button.css">
+
+  <title>Customer Insert</title>
+  <style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  </style>
+  <script src="insert_customer.js"></script>
+  </head>
+  <body onload ="httpGetAsync();loadDates();loadGivenDates();">
+    <div class="topnav">
+
+      <a  href="http://localhost/dashboard.html" >Dashboard</a>
+      <a  href="http://localhost/customer/customer_page.html" >Edit Customer</a>
+    <a href="http://localhost/product/insert_product.html" >Edit Product</a>
+    <a href="http://localhost/shop/insert_shop.html" >Edit Store</a>
+    <a href="http://localhost/transaction/cust.html" >Edit  Transaction</a>
+    </div>
+    <h1>Add new user!</h1>
+    <button class ="btn orange" type ="button" onclick="doo();"><span><b>Add new user!</b></span></button>
+    <button class ="btn orange" type ="button" onclick="redoo();"><span><b>Edit/Delete existing user!</b></span></button>
+    <div id = "the_bar" style="visibility:hidden">
+      Add card id of the user you want to change the info:
+      <input type="text" id="given_card_id">
+      <br />    <br />    <br />
+      OR, email:
+      <input type="text" id="given_email">
+       birth_date:
+       year: <select id="given_birth_date_year"></select>
+       month: <select id="given_birth_date_month"></select>
+       day: <select id="given_birth_date_day"></select>
+      <br />
+      <button class ="btn orange" type ="button" onclick="search();"><span><b>search</b></span></button>
+      </div>
+      <div id="workspace" style="visibility:hidden">
+      <div id="error_window" style="position:fixed;top:0%;right:0%"></div>
+
+    <label>card id:</label>
+    <input type="text" id="card_id">
+    <div id="card_id_error"></div>
+    <br />
+    <br />
+
+    <label>points:</label>
+    <input type="text" id="points">
+    <div id="points_error"></div>
+
+    <br />
+    <br />
+
+    <label>name:</label>
+    <input type="text" id="name">
+    <div id="name_error"></div>
+
+    <br />
+    <br />
+
+    <label>birth_date:</label>
+    year: <select id="birth_date_year"></select>
+    month: <select id="birth_date_month"></select>
+    day: <select id="birth_date_day"></select>
+
+    <div id="birth_date_error"></div>
+
+    <br />
+    <br />
+
+    <label>sex:</label>
+    <select id="sex"><option value="None">None</option><option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option></select>
+    <div id="sex_error"></div>
+
+    <br />
+    <br />
+
+    <label>email:</label>
+    <input type="text" id="email">
+    <div id="email_error"></div>
+
+    <br />
+    <br />
+
+
+    <label>marriage_status:</label>
+    <select id="marriage_status"><option value="None">None</option><option value="Single">Single</option><option value="Married">Married</option><option value="Divorced">Divorced</option><option value="Widowed">Widowed</option></select>
+
+    <div id="marriage_status_error"></div>
+
+    <br />
+    <br />
+
+    <label>number of children:</label>
+    <input type="text" id="number_of_children">
+    <div id="number_of_children_error"></div>
+
+    <br />
+    <br />
+
+    <label>city:</label>
+    <input type="text" id="city">
+    <div id="city_error"></div>
+
+    <br />
+    <br />
+
+    <label>street:</label>
+    <input type="text" id="street">
+    <div id="street_error"></div>
+
+    <br />
+    <br />
+
+    <label>number:</label>
+    <input type="text" id="number">
+    <div id="number_error"></div>
+
+    <br />
+    <br />
+
+    <label>postal code:</label>
+    <input type="text" id="postal_code">
+    <div id="postal_code_error"></div>
+
+    <br />
+    <br />
+
+    <label>pet:</label>
+    <select id="pet"><option value="None">None</option><option value="Cat">Cat</option><option value="Dog">Dog</option><option value="Bird">Bird</option></select>
+    <div id="pet_error"></div>
+
+    <br />
+    <br />
+    <div id="area0">
+    <label>Telephone</label>
+    <input type="text" id="telephone-input0">
+    <button  class ="btn orange" type ="button" onclick="add_tel('')"><span><b>Add more telephones</b></span></button>
+  </div>
+  <div id="menu"></div>
+    <br>
+    <br>
+
+    <button class ="btn orange"  type ="button" id="insert_button"onclick="upload()"><span><b>insert</b></span></button>
+
+    </div>
+    </body>
+</html>
